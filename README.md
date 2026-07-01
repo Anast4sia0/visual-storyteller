@@ -1,99 +1,49 @@
-# The Visual Storyteller
+# Visual Storyteller
 
-This is my final project for image captioning. The main idea of the project is to build a model that takes an image as input and generates a short caption for it.
+## Project Description
+This project is an image captioning system that generates a text description for an input image. The goal is to combine computer vision and natural language processing so that the model can understand the contents of an image and describe them using a sentence.
 
-For example, if the input image shows a dog running outside, the model should generate a sentence like:
-
-```text
-A dog is running in the grass.
-```
-
-## Project Overview
-
-In this project, I work with both images and text. The model has to understand what is shown in an image and then describe it using natural language.
-
-This task is interesting because it combines two areas of deep learning:
-
-* computer vision
-* natural language processing
-
-The computer vision part helps the model understand the image, and the language part helps the model generate a sentence.
+The project uses a pretrained ResNet18 model to extract image features and an LSTM network to generate captions word by word.
 
 ## Dataset
+The project uses the Flickr8k dataset.
+Around 8000 images
+Each image has 5 different human-written captions
 
-The project uses the provided dataset called `caption_data.zip`.
+The dataset is used to train the model to learn the relationship between images and their descriptions.
 
-The dataset contains:
+## Project Files
+`data_and_training.ipynb` – loads the dataset, preprocesses the data, trains the model, and saves all required files.
+`inference.ipynb` – loads the trained model and generates captions for images.
+`models/` – contains the saved model, vocabulary, configuration, and training history.
 
-* 8,000 images
-* 5 human-written captions for each image
+## Model
+The model consists of two parts.
 
-The dataset is not uploaded to this GitHub repository because it may be too large. To run the notebooks, `caption_data.zip` should be placed in the main project folder.
+The first part is a pretrained ResNet18 network that extracts a feature vector from each image. The last classification layer is removed because only the visual features are needed.
 
-## Notebooks
-
-### data_and_training.ipynb
-
-This notebook contains the main development and training process.
-
-It includes:
-
-* loading the images and captions
-* cleaning and preprocessing the captions
-* preparing the vocabulary
-* preparing the image transformations
-* defining the image captioning model
-* training the model
-* saving the trained model files
-
-### inference.ipynb
-
-This notebook is used to test the trained model.
-
-It includes:
-
-* loading the saved model
-* defining the `generate_caption(image_path, model)` function
-* testing the model on images
-* showing successful generated captions
-* showing failure cases
-* explaining where the model works well and where it makes mistakes
-
-## Model Idea
-
-The project uses an encoder-decoder idea.
-
-The encoder looks at the image and extracts important visual features.
-The decoder uses these features to generate the caption word by word.
-
-In simple words:
-
-```text
-Image → Encoder → Image features → Decoder → Caption
-```
+The second part is an LSTM network. It receives the image features together with the previous words of the caption and predicts the next word until the caption is finished.
 
 ## How to Run
+1. Place `caption_data.zip` in the project folder.
+2. Open `data_and_training.ipynb` in Jupyter Notebook and run all cells from top to bottom. This will train the model and save the required files in the `models` folder.
+3. After training is complete, open `inference.ipynb` and run all cells. The notebook loads the saved model and generates captions for sample images.
 
-1. Install the required libraries:
+## Libraries
+This project uses:
 
-```bash
-pip install -r requirements.txt
-```
+Python
+PyTorch
+Torchvision
+NumPy
+Pandas
+Matplotlib
+Pillow
+Scikit-learn
+tqdm
 
-2. Put `caption_data.zip` in the main project folder.
+## Results
+The model is able to generate reasonable captions for many images, especially those containing common objects or activities such as people, dogs, bicycles, sports and outdoor scenes.
+Some captions are not completely correct especially for more complex images with multiple people or uncommon situations. This is expected because image captioning is a difficult task and the model uses a relatively simple encoder-decoder architecture.
 
-3. Run the training notebook:
-
-```text
-data_and_training.ipynb
-```
-
-4. After the model is trained and saved, run the inference notebook:
-
-```text
-inference.ipynb
-```
-
-## Author
-
-Anastasia Gelashvili
+Overall the model demonstrates that it can learn meaningful relationships between images and natural language captions.
